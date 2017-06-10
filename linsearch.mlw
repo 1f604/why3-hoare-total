@@ -1,5 +1,8 @@
 (*
 Slight modification of original code here: https://www.lri.fr/~marche/MPRI-2-36-1/2014/lin_search_sol.mlw
+Things added: 
+- Loop variant to prove termination
+- Early termination on finding target value, such that the returned value, if non-negative, is the first occurrence of the target value in the array. 
 *)
 module LinSearch
 
