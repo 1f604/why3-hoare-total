@@ -1,0 +1,40 @@
+(*
+Slight modification of original code here: https://www.lri.fr/~marche/MPRI-2-36-1/2014/lin_search_sol.mlw
+*)
+module LinSearch
+
+  use import int.Int
+  use import real.RealInfix
+  use import ref.Ref
+  use import array.Array
+
+  val a: array real
+
+  let search (v:real)
+    ensures  { -1 <= result < length a }
+    ensures  { result >= 0 -> a[result] = v }
+    ensures  { forall j:int. 0 <= j < result -> a[j] <> v }
+    ensures  { result = -1 -> forall j:int. 0 <= j < length a -> a[j] <> v }
+  = let i = ref 0 in
+    let res = ref (-1) in
+    while !i < length a && !res = -1  do
+      invariant { 0 <= !i <= length a  }
+      invariant { -1 <= !res < length a }
+      invariant { !res = -1 -> forall j:int. 0 <= j < !i -> a[j] <> v }
+      invariant { forall j:int. 0 <= j < !res -> a[j] <> v }
+      invariant { !res >= 0 -> a[!res] = v }
+      variant { length a - !i}
+      let t = a[!i] in
+      if t = v then res := !i; 
+      i := !i + 1
+    done;
+    !res
+
+end
+
+
+(*
+Local Variables:
+compile-command: "why3ide linsearch.mlw"
+End:
+*)
